@@ -10,3 +10,9 @@ G:\Server\Server\obj\Debug\Server.pdb
 G:\Server\Server\bin\Debug\Server.exe
 G:\Server\Server\bin\Debug\Server.pdb
 G:\Server\Server\obj\Debug\Server.csprojResolveAssemblyReference.cache
+G:\project\Server\Server\bin\Debug\Server.exe.config
+G:\project\Server\Server\obj\Debug\Server.exe
+G:\project\Server\Server\obj\Debug\Server.pdb
+G:\project\Server\Server\bin\Debug\Server.exe
+G:\project\Server\Server\bin\Debug\Server.pdb
+G:\project\Server\Server\obj\Debug\Server.csprojResolveAssemblyReference.cache

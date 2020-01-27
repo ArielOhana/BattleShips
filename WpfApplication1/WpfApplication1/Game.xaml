@@ -40,7 +40,7 @@
             <Label x:Name="Player2lbl" Content="Player 2: " HorizontalAlignment="Right" FontSize="20" VerticalAlignment="Center"  Foreground="#FF00C5FF" Margin="0,14" Width="195" />
 
         </Grid>
-        <Grid x:Name="board" ShowGridLines="True" MouseLeftButtonDown="Board_MouseLeftButtonDown" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="10" Grid.RowSpan="10" Background="#FF00C5FF">
+        <Grid x:Name="board" ShowGridLines="True" MouseLeftButtonDown="Board_MouseLeftButtonDown" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="10" Grid.RowSpan="10" Background="#FF00C5FF" MouseMove="Mouse_Move" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
@@ -86,7 +86,7 @@
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
-
+            
             <!--Board Content-->
 
         </Grid>

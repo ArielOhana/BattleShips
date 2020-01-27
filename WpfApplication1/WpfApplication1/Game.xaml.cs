@@ -21,6 +21,7 @@ namespace WpfApplication1
     {
         int x = -1;
         int y = -1;
+        Rectangle rec = new Rectangle();
         Image[] limgs = new Image[3];//placeable large ships = 3
         Image[] mimgs = new Image[4];// placeable medium ships = 4
         Image[] simgs = new Image[3];// placeable medium ships = 3
@@ -31,6 +32,7 @@ namespace WpfApplication1
         int[,] field; // 0 means empty, 1 means full, 2 means hit, 3 means shooted in an empty space
         public Game(ServerHandler Client, int playernumber,string myusername, int enemyid)
         {
+            this.rec.Fill = Brushes.Red;
             InitializeComponent();
             this.Client = Client;
             this.playernumber = playernumber;
@@ -51,29 +53,7 @@ namespace WpfApplication1
 
             }
         }
-
-        //private void Mouse_Down(object sender, MouseButtonEventArgs e)
-        //{
-        //    Image Slot = (Image)sender;
-        //    if (Slot.Opacity == 1)
-        //        Slot.Opacity = 0;
-        //    else
-        //        Slot.Opacity = 1;
-        //}
-        //private void Mouse_Enter(object sender, MouseEventArgs e)
-        //{
-        //    Image Slot = (Image)sender;
-        //    if (Slot.Opacity != 1)
-        //        Slot.Opacity = 0.5;
-        //}
-        //private void Mouse_Leave(object sender, MouseEventArgs e)
-        //{
-        //    Image Slot = (Image)sender;
-        //    if (Slot.Opacity != 1)
-        //        Slot.Opacity = 0;
-        //}
-
-        private void Board_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private int[] GetMouseLoc()
         {
             var point = Mouse.GetPosition(board);
             int row = 0;
@@ -98,6 +78,44 @@ namespace WpfApplication1
                     break;
                 col++;
             }
+            int[] tosend = new int[2];
+            tosend[0] = col;
+            tosend[1] = row;
+            return tosend;
+        }
+        //private void Mouse_Down(object sender, MouseButtonEventArgs e)
+        //{
+        //    Image Slot = (Image)sender;
+        //    if (Slot.Opacity == 1)
+        //        Slot.Opacity = 0;
+        //    else
+        //        Slot.Opacity = 1;
+        //}
+        private void Mouse_Move(object sender, MouseEventArgs e)
+        {
+            int[] getloc = GetMouseLoc();
+            int col = getloc[0];
+            int row = getloc[1];
+           
+            if (!(playernumber == 1 && col < 10 || playernumber == 2 && col >= 10 ) &&(field[col,row] == 0))// checks if the placement is in the zone
+            {               
+                board.Children.Remove(rec);
+                Grid.SetColumn(rec, col);
+                Grid.SetRow(rec, row);
+                board.Children.Add(rec);
+            }
+            else//if it's inbound
+            {
+                if (board.Children.Contains(rec))
+                    board.Children.Remove(rec);
+            }
+        }
+
+        private void Board_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            int[] getloc = GetMouseLoc();
+            int col = getloc[0];
+            int row = getloc[1];
             // X and Y presents the cordinates of the 1 before the last tap location.
             // Col and Row presents the cordinates of tapped location.
             if (playernumber == 1 && col < 10 || playernumber == 2 && col >= 10)// checks if the placement is in the zone
@@ -179,7 +197,7 @@ namespace WpfApplication1
                 {
                     textblock.Text += "No more ships left!\n";
                 }
-                if(!full && !(field[x, y] == 0 || field[x + 1, y] == 0 || field[x + 2, y] == 0))
+                if(!full || !(field[x, y] == 0 || field[x + 1, y] == 0 || field[x + 2, y] == 0))
                 {
                     //Any other reason.
                 }
@@ -219,5 +237,7 @@ namespace WpfApplication1
                 // ADD SOMETHING TO SAY THERE IS NO OPEN SLOTS!
             }
         }
+
+        
     }
 }
