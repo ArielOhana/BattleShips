@@ -32,7 +32,7 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <TextBlock x:Name="textblock" HorizontalAlignment="Center" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Margin="0,66,0,0" MinHeight="362" Foreground="#FF00C5FF" MinWidth="197" FontSize="20"/>
+            <TextBlock x:Name="textblock" HorizontalAlignment="Center" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Margin="0,66,0,0" Foreground="#FF00C5FF" MinWidth="197" FontSize="20"/>
         </Grid>
         <Grid Grid.ColumnSpan="10" Grid.Column="1" Background="#FF6A6A6A" >
             <Label x:Name="BattleShipLabel" Content="Battle Ship" HorizontalAlignment="Center" FontSize="30" VerticalAlignment="Center"  Foreground="#FF00C5FF" FontWeight="Bold"/>

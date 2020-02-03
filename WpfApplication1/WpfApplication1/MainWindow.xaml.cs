@@ -28,9 +28,9 @@ namespace WpfApplication1
         private int wins; // Player wins
         private int loses;// Player's loses
         private int rank;// Player's rank
-        public int playernumber;
-        public int enemyid;
-        public string myusername;
+        public int playernumber;//first/second
+        public int enemyid;//server's ID
+        public string myusername;// player's username
         public MainWindow()
         {
            

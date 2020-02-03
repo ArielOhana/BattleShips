@@ -104,11 +104,18 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\submarine1.png" />
-    <Resource Include="Images\submarine2.png" />
-    <Resource Include="Images\submarine3.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="Images\submarine1Left.png" />
+    <Resource Include="Images\submarine2Left.png" />
+    <Resource Include="Images\submarine2Right.png" />
+    <Resource Include="Images\submarine3Left.png" />
+    <Resource Include="Images\submarine3Right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\submarine1Right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\submarine4Left.png" />
+    <Resource Include="Images\submarine4Right.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
