@@ -24,7 +24,7 @@
                     <GradientStop Color="#FF007385"/>
                 </RadialGradientBrush>
             </Grid.Background>
-            <Button x:Name="Finish" Grid.ColumnSpan="2" Content="Enter" HorizontalAlignment="Center" VerticalAlignment="Bottom" MinWidth="115" Foreground="#FF080808">
+            <Button x:Name="Finish" Grid.ColumnSpan="2" Content="Enter" HorizontalAlignment="Center" VerticalAlignment="Bottom" MinWidth="115" Foreground="#FF080808" Click="Finish_Click">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="Black" Offset="0"/>
@@ -32,7 +32,8 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <TextBlock x:Name="textblock" HorizontalAlignment="Center" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Margin="0,66,0,0" Foreground="#FF00C5FF" MinWidth="197" FontSize="20"/>
+            <TextBlock x:Name="textblock" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,66,0,0" Foreground="#FF00C5FF" MinWidth="197" FontSize="20"/>
+            <Label x:Name="Shipsleft" Content=""  VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="-10,0,10,100"  Foreground="#FF00C5FF" FontSize="20" />
         </Grid>
         <Grid Grid.ColumnSpan="10" Grid.Column="1" Background="#FF6A6A6A" >
             <Label x:Name="BattleShipLabel" Content="Battle Ship" HorizontalAlignment="Center" FontSize="30" VerticalAlignment="Center"  Foreground="#FF00C5FF" FontWeight="Bold"/>
@@ -86,7 +87,7 @@
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
-            
+
             <!--Board Content-->
 
         </Grid>

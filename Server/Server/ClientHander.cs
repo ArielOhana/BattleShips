@@ -22,6 +22,7 @@ namespace Server
         private bool findgame = false;
         private static List<User> users = new List<User>();
         public static int Userslogged = 0;
+        private static List<string> StopPreparing = new List<string>();
         
         public ClientHandler(TcpClient clnt)
         {
@@ -103,7 +104,17 @@ namespace Server
                     int enemyidGEN = int.Parse(recived.Substring(3, 1));
                     Send(users[enemyidGEN].GetUN());
                 }
-                
+                if (PROTOCOL == "SPP")// STOP PREPARING PROTOCOL = Checks if both of the praticipators ready 
+                {
+                    if (SPPFunction(recived))
+                        Console.WriteLine("ID: " + ClientSpecificNumber + " And ID: " + recived.Substring(3, 1) + " Stopped preparing and now starting to play");
+                    else
+                        Console.WriteLine("ID: " + ClientSpecificNumber + "Stopped preparing and waiting for ID: " + recived.Substring(3, 1) + " to finish preparing");
+                }
+                if(PROTOCOL == "FLD") // Write IT!!
+                {
+
+                }  
                 stream.BeginRead(data, 0, data.Length, HandleRead, null);
             }
             catch (Exception)
@@ -268,6 +279,25 @@ namespace Server
             {
                 ClientSpecificNumber = value;
             }
+        }
+        public bool SPPFunction(string recived)
+        {   
+            string firstplayer = recived.Substring(3,1);
+            string msg = firstplayer;
+            msg = msg + "-" + ClientSpecificNumber;
+            if (StopPreparing.Contains(ClientSpecificNumber + "-" + firstplayer))
+            {
+                clntList[int.Parse(firstplayer)].Send("Start Playing");
+                Send("Start Playing");
+                StopPreparing.Remove(ClientSpecificNumber + "-" + firstplayer);
+                return true;
+
+            }
+            else if (StopPreparing.Contains(msg))
+                Console.WriteLine("ID: " + ClientSpecificNumber + " Already started the SPP protocol.");
+            else
+                StopPreparing.Add(msg);
+            return false;  
         }
     }
 }

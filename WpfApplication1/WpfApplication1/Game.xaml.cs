@@ -22,7 +22,7 @@ namespace WpfApplication1
         int x = -1;
         int y = -1;
         Rectangle rec = new Rectangle();
-        Image[] xlimgs = new Image[2];
+        Image[] xlimgs = new Image[2];// placeable extra large ships = 2
         Image[] limgs = new Image[3];//placeable large ships = 3
         Image[] mimgs = new Image[4];// placeable medium ships = 4
         Image[] simgs = new Image[3];// placeable medium ships = 3
@@ -32,7 +32,8 @@ namespace WpfApplication1
         string enemyname;
         int textblockcounter;//counts how many lines were written to purge it
         int[,] field; // 0 means empty, 1 means full, 2 means hit, 3 means shooted in an empty space
-        public Game(ServerHandler Client, int playernumber,string myusername, int enemyid)
+        bool preparing = true;
+        public Game(ServerHandler Client, int playernumber,string myusername, int enemyid) // Creates a game
         {
             this.textblockcounter = 0;
             this.rec.Fill = Brushes.Red;
@@ -52,7 +53,7 @@ namespace WpfApplication1
                 }
             }
 
-            if(playernumber == 1)
+            if(playernumber == 1) //writes on the upper labels the names of the players by their player number.
             {
                 Player1lbl.Content = Player1lbl.Content+ myusername;
                 Player2lbl.Content = Player2lbl.Content + enemyname;
@@ -64,7 +65,7 @@ namespace WpfApplication1
 
             }
         }
-        private int[] GetMouseLoc()
+        private int[] GetMouseLoc() //Gets the mouse location
         {
             var point = Mouse.GetPosition(board);
             int row = 0;
@@ -102,7 +103,7 @@ namespace WpfApplication1
         //    else
         //        Slot.Opacity = 1;
         //}
-        private void Mouse_Move(object sender, MouseEventArgs e)
+        private void Mouse_Move(object sender, MouseEventArgs e) //Event that happens as the mouse moves
         {
             int[] getloc = GetMouseLoc();
             int col = getloc[0];
@@ -125,8 +126,8 @@ namespace WpfApplication1
         private void Board_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             int[] getloc = GetMouseLoc();
-            int col = getloc[0];
-            int row = getloc[1];
+            int col = getloc[0]; // sets last col to the current one
+            int row = getloc[1];// sets last row to the current one
             // X and Y presents the cordinates of the 1 before the last tap location.
             // Col and Row presents the cordinates of tapped location.
             if (playernumber == 1 && col < 10 || playernumber == 2 && col >= 10)// checks if the placement is in the zone
@@ -177,20 +178,24 @@ namespace WpfApplication1
                         y = -1;  
                     }
                 }
-                else
+                else // didn't tapped before
                 {
                     x = col;
                     y = row;
 
                 }
             }
-            else
+            else //incase it's out of range
             {
                 Writeintotextblock("Out of range");
             }
+            if(UpdateShipsLeft()) // updates the "shipsleft" label and enters if there are no ships left
+            {
+                Writeintotextblock("No ships left, Press ENTER to start playing");
+            }
         }
 
-        private void CreateExtraLargeSubFlat(int x, int y)//Creating flat large submarine (one row)
+        private void CreateExtraLargeSubFlat(int x, int y) // Creates extra large ship and sets it into the field, board and array.
         {
             bool full = true;
             bool placeable = false;
@@ -242,7 +247,7 @@ namespace WpfApplication1
             }
         }
 
-        private void CreateLargeSubFlat(int x, int y)//Creating flat large submarine (one row)
+        private void CreateLargeSubFlat(int x, int y) // Creates large ship and sets it into the field, board and array.
         {
             bool full = true;
             bool placeable = false;
@@ -292,7 +297,7 @@ namespace WpfApplication1
                 
             }
         }
-        private void CreateMediumSubFlat(int x, int y)//Creating flat large submarine (one row)
+        private void CreateMediumSubFlat(int x, int y) // Creates medium ship and sets it into the field, board and array.
         {
             bool full = true;
             bool placeable = false;
@@ -344,7 +349,7 @@ namespace WpfApplication1
                 }
             
         }
-        private void CreateSmallSub(int x, int y)
+        private void CreateSmallSub(int x, int y) // Creates small ship and sets it into the field, board and array.
         {
 
             bool full = true;
@@ -394,11 +399,11 @@ namespace WpfApplication1
 
             }
         }
-        private void RemoveShip(int x, int y)
+        private void RemoveShip(int x, int y) //Removes ship from it's array, remove it from the field and board childrens
         {
             bool foundship = false;
             for (int i = 0; i < simgs.Length && !foundship; i++)
-                if(simgs[i] != null)
+                if (simgs[i] != null)
                 {
                     if (Grid.GetColumn(simgs[i]) == x && Grid.GetRow(simgs[i]) == y)
                     {
@@ -408,22 +413,22 @@ namespace WpfApplication1
                         foundship = true;
                     }
                 }
-                for (int i = 0; i < mimgs.Length && !foundship; i++)
-                    if (mimgs[i] != null)
+            for (int i = 0; i < mimgs.Length && !foundship; i++)
+                if (mimgs[i] != null)
+                {
+                    if ((Grid.GetColumn(mimgs[i]) == x) && (Grid.GetRow(mimgs[i]) == y))
                     {
-                        if ((Grid.GetColumn(mimgs[i]) == x) && (Grid.GetRow(mimgs[i]) == y))
-                        {
-                            board.Children.Remove(mimgs[i]);
-                            mimgs[i] = null;
-                            field[x, y] = 0;
-                            field[x + 1, y] = 0;
-                            foundship = true;
-                        }
-                    else if  ((Grid.GetColumn(mimgs[i]) == x-1) && (Grid.GetRow(mimgs[i]) == y))
-                        {
                         board.Children.Remove(mimgs[i]);
                         mimgs[i] = null;
-                        field[x-1, y] = 0;
+                        field[x, y] = 0;
+                        field[x + 1, y] = 0;
+                        foundship = true;
+                    }
+                    else if ((Grid.GetColumn(mimgs[i]) == x - 1) && (Grid.GetRow(mimgs[i]) == y))
+                    {
+                        board.Children.Remove(mimgs[i]);
+                        mimgs[i] = null;
+                        field[x - 1, y] = 0;
                         field[x, y] = 0;
                         foundship = true;
 
@@ -462,8 +467,60 @@ namespace WpfApplication1
                         foundship = true;
 
                     }
+
                 }
+            for (int i = 0; i < xlimgs.Length && !foundship; i++)
+                if (xlimgs[i] != null)
+                {
+                    if ((Grid.GetColumn(xlimgs[i]) == x) && (Grid.GetRow(xlimgs[i]) == y))
+                    {
+                        board.Children.Remove(xlimgs[i]);
+                        xlimgs[i] = null;
+                        field[x, y] = 0;
+                        field[x + 1, y] = 0;
+                        field[x + 2, y] = 0;
+                        field[x + 3, y] = 0;
+                        foundship = true;
+                    }
+                    else if ((Grid.GetColumn(xlimgs[i]) == x - 1) && (Grid.GetRow(xlimgs[i]) == y))
+                    {
+                        board.Children.Remove(xlimgs[i]);
+                        xlimgs[i] = null;
+                        field[x - 1, y] = 0;
+                        field[x, y] = 0;
+                        field[x + 1, y] = 0;
+                        field[x + 2, y] = 0;
+                        foundship = true;
+
+                    }
+                    else if ((Grid.GetColumn(xlimgs[i]) == x - 2) && (Grid.GetRow(xlimgs[i]) == y))
+                    {
+                        board.Children.Remove(xlimgs[i]);
+                        xlimgs[i] = null;
+                        field[x - 2, y] = 0;
+                        field[x - 1, y] = 0;
+                        field[x, y] = 0;
+                        field[x + 1, y] = 0;
+                        foundship = true;
+
+                    }
+                    else if ((Grid.GetColumn(xlimgs[i]) == x - 3) && (Grid.GetRow(xlimgs[i]) == y))
+                    {
+                        board.Children.Remove(xlimgs[i]);
+                        xlimgs[i] = null;
+                        field[x - 3, y] = 0;
+                        field[x - 2, y] = 0;
+                        field[x - 1, y] = 0;
+                        field[x, y] = 0;
+                        foundship = true;
+
+                    }
                 }
+            if(foundship)
+            {
+                Writeintotextblock("Ship Removed");
+            }
+        }
 
         private void Writeintotextblock(string thingtowrite)
         {
@@ -478,7 +535,98 @@ namespace WpfApplication1
             }
             textblockcounter++;
         }
+        private bool UpdateShipsLeft() //Updates how many ships left and sets it into "Shipleft" label and sends true if no ships left
+        {
+            int extralarge = 0;
+            int large = 0;
+            int medium = 0;
+            int small = 0;
+            for (int i = 0; i < xlimgs.Length; i++)
+                if (xlimgs[i] == null)
+                    extralarge++;
+            for (int i = 0; i < limgs.Length; i++)
+                if (limgs[i] == null)
+                    large++;
+            for (int i = 0; i < mimgs.Length; i++)
+                if (mimgs[i] == null)
+                    medium++;
+            for (int i = 0; i < simgs.Length; i++)
+                if (simgs[i] == null)
+                    small++;
+            Shipsleft.Content = "extra large ships left: " + extralarge + "\n" + "large ships left: " + large + "\n" + "medium ships left: " + medium + "\n" + "small ships left: " + small + "\n";
+            if (small + medium + large + extralarge == 0)
+                return true;
+            return false;
 
-        
+        }
+        private int GetHowManyShipsLeft() //Updates how many ships left and sets it into "Shipleft" label and sends true if no ships left
+        {
+            int extralarge = 0;
+            int large = 0;
+            int medium = 0;
+            int small = 0;
+            for (int i = 0; i < xlimgs.Length; i++)
+                if (xlimgs[i] == null)
+                    extralarge++;
+            for (int i = 0; i < limgs.Length; i++)
+                if (limgs[i] == null)
+                    large++;
+            for (int i = 0; i < mimgs.Length; i++)
+                if (mimgs[i] == null)
+                    medium++;
+            for (int i = 0; i < simgs.Length; i++)
+                if (simgs[i] == null)
+                    small++;
+            return small + medium + large + extralarge;
+
+        }
+
+        private void Finish_Click(object sender, RoutedEventArgs e)
+        {
+            if (GetHowManyShipsLeft() == 0)
+            {
+                
+                Client.WriteThread("SPP" + enemyid);
+                Finishcontinue();
+            }
+            else
+                Writeintotextblock("You need to place more ships!");
+        }
+        private async void Finishcontinue()
+        {
+            bool c;
+            Task<bool> waiting = new Task<bool>(Finish2);
+            waiting.Start();
+
+            c = await waiting;
+            if (c)
+            {
+                Writeintotextblock("Start Playing");
+                preparing = false;
+                SendField();
+
+            }
+        }
+        private bool Finish2()
+        {
+            if (Client.ReadThread() == "Start Playing")
+                return true;
+            return false;
+        }
+        private void SendField()
+        {
+            string tosendfield = "";
+            for (int i = 0; i < field.GetLength(0); i++)
+            {
+                for (int j = 0; j < field.GetLength(1); j++)
+                {
+                    tosendfield += field[i, j];
+                }
+                tosendfield += "\n";
+            }
+            Client.WriteThread(tosendfield);
+        }
     }
-}
+     
+    }
+
