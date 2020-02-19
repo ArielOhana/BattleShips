@@ -145,7 +145,9 @@ namespace Server
                             
                         } // FLD end
                         if( PROTOCOL == "HIT")// Game Protocol, gets a point and check if it hits the enemy's battle ship, uses field of both players in game.
-                     
+                        {
+                            // need to write
+                        }
                     }
                     if (intransmission)
                     {
