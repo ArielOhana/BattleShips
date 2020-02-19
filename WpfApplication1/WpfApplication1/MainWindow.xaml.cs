@@ -96,6 +96,7 @@ namespace WpfApplication1
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
+            Client.WriteThread("OUT");
             Client.Close();
             this.Close();// exit the game 
         }

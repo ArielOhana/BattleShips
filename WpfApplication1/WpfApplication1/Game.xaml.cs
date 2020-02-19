@@ -130,68 +130,76 @@ namespace WpfApplication1
             int row = getloc[1];// sets last row to the current one
             // X and Y presents the cordinates of the 1 before the last tap location.
             // Col and Row presents the cordinates of tapped location.
-            if (playernumber == 1 && col < 10 || playernumber == 2 && col >= 10)// checks if the placement is in the zone
+            if (preparing)
             {
-
-                if (x != -1 && y != -1) //means last tap was to place or hadn't tapped before.
+                if (playernumber == 1 && col < 10 || playernumber == 2 && col >= 10)// checks if the placement is in the zone
                 {
-                    if (field[x, y] == 0)
+
+                    if (x != -1 && y != -1) //means last tap was to place or hadn't tapped before.
                     {
-                        if (x == col - 3 && y == row)
+                        if (field[x, y] == 0)
                         {
-                            CreateExtraLargeSubFlat(x, y);
+                            if (x == col - 3 && y == row)
+                            {
+                                CreateExtraLargeSubFlat(x, y);
 
-                        }
-                        if (x - 3 == col && y == row)
-                        {
-                            CreateExtraLargeSubFlat(col, y);
-                        }
-                        if (x == col - 2 && y == row)
-                        {
-                            CreateLargeSubFlat(x, y);
+                            }
+                            if (x - 3 == col && y == row)
+                            {
+                                CreateExtraLargeSubFlat(col, y);
+                            }
+                            if (x == col - 2 && y == row)
+                            {
+                                CreateLargeSubFlat(x, y);
 
-                        }
-                        if (x - 2 == col && y == row)
-                        {
-                            CreateLargeSubFlat(col, y);
-                        }
-                        if (x == col - 1 && y == row)
-                        {
-                            CreateMediumSubFlat(x, y);
-                        }
-                        if (x - 1 == col && y == row)
-                        {
-                            CreateMediumSubFlat(col, y);
-                        }
-                        if (x == col && y == row)
-                        {
-                            CreateSmallSub(col, row);
-                        }
+                            }
+                            if (x - 2 == col && y == row)
+                            {
+                                CreateLargeSubFlat(col, y);
+                            }
+                            if (x == col - 1 && y == row)
+                            {
+                                CreateMediumSubFlat(x, y);
+                            }
+                            if (x - 1 == col && y == row)
+                            {
+                                CreateMediumSubFlat(col, y);
+                            }
+                            if (x == col && y == row)
+                            {
+                                CreateSmallSub(col, row);
+                            }
 
-                        x = -1;
-                        y = -1;
+                            x = -1;
+                            y = -1;
+                        }
+                        else//pressed on a battleship
+                        {
+                            RemoveShip(x, y);
+                            x = -1;
+                            y = -1;
+                        }
                     }
-                    else//pressed on a battleship
+                    else // didn't tapped before
                     {
-                        RemoveShip(x, y);
-                        x = -1;
-                        y = -1;  
+                        x = col;
+                        y = row;
+
                     }
                 }
-                else // didn't tapped before
+                else //incase it's out of range
                 {
-                    x = col;
-                    y = row;
-
+                    Writeintotextblock("Out of range");
                 }
-            }
-            else //incase it's out of range
+                if (UpdateShipsLeft()) // updates the "shipsleft" label and enters if there are no ships left
+                {
+                    Writeintotextblock("No ships left, Press ENTER to start playing");
+                }
+            }// all of that happens if the players are still preparing their ships for the game.
+            else if(playernumber == 2 && col < 10 || playernumber == 1 && col >= 10)
             {
-                Writeintotextblock("Out of range");
-            }
-            if(UpdateShipsLeft()) // updates the "shipsleft" label and enters if there are no ships left
-            {
-                Writeintotextblock("No ships left, Press ENTER to start playing");
+
+
             }
         }
 
@@ -594,6 +602,10 @@ namespace WpfApplication1
         }
         private async void Finishcontinue()
         {
+            preparing = false;
+            Finish.Visibility = Visibility.Hidden;
+            textblock.Text = "Waiting for the second player to finish his preparing, please wait";
+            Shipsleft.Visibility = Visibility.Hidden;
             bool c;
             Task<bool> waiting = new Task<bool>(Finish2);
             waiting.Start();
@@ -601,10 +613,9 @@ namespace WpfApplication1
             c = await waiting;
             if (c)
             {
-                Writeintotextblock("Start Playing");
-                preparing = false;
+                textblock.Text = "Start Playing"; 
                 SendField();
-
+                
             }
         }
         private bool Finish2()
@@ -615,12 +626,12 @@ namespace WpfApplication1
         }
         private void SendField()
         {
-            string tosendfield = "";
-            for (int i = 0; i < field.GetLength(0); i++)
+            string tosendfield = "FLD:\n";
+            for (int i = 0; i < field.GetLength(1); i++)
             {
-                for (int j = 0; j < field.GetLength(1); j++)
+                for (int j = 0; j < field.GetLength(0); j++)
                 {
-                    tosendfield += field[i, j];
+                    tosendfield += field[i,j];
                 }
                 tosendfield += "\n";
             }
@@ -628,5 +639,5 @@ namespace WpfApplication1
         }
     }
      
-    }
+}
 
