@@ -90,6 +90,16 @@ namespace Server
         {
             return Map;
         }
+        public bool HitMap(int col, int row) //Sets the map on the col and row to zero and checks if it hit something.
+        {
+            bool toret = false;
+            if(Map[col,row] == 1) // if there is a ship
+            {
+                toret = true;   
+            }
+            Map[col, row] = 0;
+            return toret;
+        }
 
     }
 }

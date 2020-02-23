@@ -38,7 +38,7 @@ namespace Server
         {
             try
             {
-                if (intransmission)
+                if (intransmission) // if the player is still logged.
                 {
                     string recived = Encoding.UTF8.GetString(data, 0, data.Length);
                     recived = recived.Replace("\0", "");
@@ -142,11 +142,25 @@ namespace Server
 
                                 }
                             }
-                            
+
                         } // FLD end
-                        if( PROTOCOL == "HIT")// Game Protocol, gets a point and check if it hits the enemy's battle ship, uses field of both players in game.
+                        if (PROTOCOL == "HIT")// Game Protocol, gets a point and check if it hits the enemy's battle ship, uses field of both players in game.
                         {
-                            // need to write
+                            for (int i = 0; i < Games.Count; i++)
+                            {
+                                if (Games[i].Player1 == ClientSpecificNumber || Games[i].Player2 == ClientSpecificNumber)
+                                {
+                                    msg = msg.Remove(0, 5);//The protocol.
+                                    int firstnum = msg.IndexOf(","); // finds the point to split.
+                                    Console.WriteLine(msg + ", "+firstnum); // for debugger.
+                                    int col = int.Parse(msg.Substring(0, firstnum)); // The column.
+                                    int row = int.Parse(msg.Substring(firstnum + 1));// The row.
+                                    if (Games[i].HitMap(col, row)) // Starts the HITMAP function by sending them the col and the row I recieved.
+                                        Send("C"); // incase Caught one of the enemy's ships.
+                                    else
+                                        Send("M"); //incase missed.
+                                }
+                            }
                         }
                     }
                     if (intransmission)

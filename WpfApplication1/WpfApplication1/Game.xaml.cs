@@ -19,9 +19,12 @@ namespace WpfApplication1
     /// </summary>
     public partial class Game : Window
     {
+        int Tocatch;
         int x = -1;
         int y = -1;
         Rectangle rec = new Rectangle();
+        Rectangle Hitted = new Rectangle();
+        int Hittedtag = 0;
         Image[] xlimgs = new Image[2];// placeable extra large ships = 2
         Image[] limgs = new Image[3];//placeable large ships = 3
         Image[] mimgs = new Image[4];// placeable medium ships = 4
@@ -35,6 +38,8 @@ namespace WpfApplication1
         bool preparing = true;
         public Game(ServerHandler Client, int playernumber,string myusername, int enemyid) // Creates a game
         {
+            this.Hitted.Fill = Brushes.Black;
+            this.Hitted.Opacity = 0.8;
             this.textblockcounter = 0;
             this.rec.Fill = Brushes.Red;
             this.rec.Opacity = 0.7;
@@ -49,7 +54,7 @@ namespace WpfApplication1
             {
                 for (int j = 0; j < field.GetLength(1); j++)
                 {
-                    field[i, j] = 0;
+                    field[i, j] = 0; //Sets an empty field
                 }
             }
 
@@ -64,6 +69,8 @@ namespace WpfApplication1
                 Player2lbl.Content = Player2lbl.Content + myusername;
 
             }
+            this.Tocatch = xlimgs.Length + limgs.Length + mimgs.Length + simgs.Length;
+
         }
         private int[] GetMouseLoc() //Gets the mouse location
         {
@@ -95,14 +102,7 @@ namespace WpfApplication1
             tosend[1] = row;
             return tosend;
         }
-        //private void Mouse_Down(object sender, MouseButtonEventArgs e)
-        //{
-        //    Image Slot = (Image)sender;
-        //    if (Slot.Opacity == 1)
-        //        Slot.Opacity = 0;
-        //    else
-        //        Slot.Opacity = 1;
-        //}
+
         private void Mouse_Move(object sender, MouseEventArgs e) //Event that happens as the mouse moves
         {
             int[] getloc = GetMouseLoc();
@@ -196,10 +196,36 @@ namespace WpfApplication1
                     Writeintotextblock("No ships left, Press ENTER to start playing");
                 }
             }// all of that happens if the players are still preparing their ships for the game.
-            else if(playernumber == 2 && col < 10 || playernumber == 1 && col >= 10)
+            else if((playernumber == 2 && col < 10 || playernumber == 1 && col >= 10) && (field[col,row] == 0))
             {
 
-
+                Client.WriteThread("HIT: " + col+"," +row);
+                string recieved = Client.ReadThread();
+                //  Writeintotextblock(recieved); // Recieves the answer, missed or cought
+                Hitted.Tag = Hittedtag; // avoids double of the same object.
+                Grid.SetColumn(Hitted , col); // Sets the column of the object
+                Grid.SetRow(Hitted, row);// Sets the row of the object
+                board.Children.Add(Hitted); // adds it to the board.
+                Hittedtag++; // promotes the tag
+                Tocatch--; // if Tocatch == 0 he won
+                if (recieved == "C") // incase caught
+                {
+                    field[col, row] = 2;
+                    Writeintotextblock("Cought him!");
+                }
+                if (recieved == "M") // incase missed
+                {
+                    field[col, row] = 3;
+                    Writeintotextblock("Missed...");
+                }
+            }
+            else if ((playernumber == 2 && col < 10 || playernumber == 1 && col >= 10) && (field[col, row] == 2))
+            {
+                Writeintotextblock("The ship at: " + col+ "," + row+" already hitted");
+            }
+            else if ((playernumber == 2 && col < 10 || playernumber == 1 && col >= 10) && (field[col, row] == 3))
+            {
+                Writeintotextblock("You already tried to hit: " + col + "," + row + " and missed...");
             }
         }
 
