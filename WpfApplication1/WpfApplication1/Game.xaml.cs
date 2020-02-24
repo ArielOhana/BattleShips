@@ -23,8 +23,6 @@ namespace WpfApplication1
         int x = -1;
         int y = -1;
         Rectangle rec = new Rectangle();
-        Rectangle Hitted = new Rectangle();
-        int Hittedtag = 0;
         Image[] xlimgs = new Image[2];// placeable extra large ships = 2
         Image[] limgs = new Image[3];//placeable large ships = 3
         Image[] mimgs = new Image[4];// placeable medium ships = 4
@@ -38,8 +36,7 @@ namespace WpfApplication1
         bool preparing = true;
         public Game(ServerHandler Client, int playernumber,string myusername, int enemyid) // Creates a game
         {
-            this.Hitted.Fill = Brushes.Black;
-            this.Hitted.Opacity = 0.8;
+
             this.textblockcounter = 0;
             this.rec.Fill = Brushes.Red;
             this.rec.Opacity = 0.7;
@@ -69,7 +66,7 @@ namespace WpfApplication1
                 Player2lbl.Content = Player2lbl.Content + myusername;
 
             }
-            this.Tocatch = xlimgs.Length + limgs.Length + mimgs.Length + simgs.Length;
+            this.Tocatch = xlimgs.Length*4 + limgs.Length*3 + mimgs.Length*2 + simgs.Length;
 
         }
         private int[] GetMouseLoc() //Gets the mouse location
@@ -202,22 +199,28 @@ namespace WpfApplication1
                 Client.WriteThread("HIT: " + col+"," +row);
                 string recieved = Client.ReadThread();
                 //  Writeintotextblock(recieved); // Recieves the answer, missed or cought
-                Hitted.Tag = Hittedtag; // avoids double of the same object.
-                Grid.SetColumn(Hitted , col); // Sets the column of the object
-                Grid.SetRow(Hitted, row);// Sets the row of the object
-                board.Children.Add(Hitted); // adds it to the board.
-                Hittedtag++; // promotes the tag
-                Tocatch--; // if Tocatch == 0 he won
+                //Hitted.Tag = Hittedtag; // avoids double of the same object.
+                Rectangle placerec = new Rectangle();
                 if (recieved == "C") // incase caught
                 {
                     field[col, row] = 2;
                     Writeintotextblock("Cought him!");
+                    placerec.Opacity = 0.8;
                 }
                 if (recieved == "M") // incase missed
                 {
                     field[col, row] = 3;
                     Writeintotextblock("Missed...");
+                    placerec.Opacity = 0.4;
                 }
+                Grid.SetColumn(placerec , col); // Sets the column of the object
+                Grid.SetRow(placerec, row);// Sets the row of the object
+                placerec.Fill = Brushes.Black;
+                
+
+                board.Children.Add(placerec); // adds it to the board.
+                Tocatch--; // if Tocatch == 0 he won
+                Shipsleft.Content = "Ships to catch: "+ Tocatch.ToString();
             }
             else if ((playernumber == 2 && col < 10 || playernumber == 1 && col >= 10) && (field[col, row] == 2))
             {
@@ -631,7 +634,7 @@ namespace WpfApplication1
             preparing = false;
             Finish.Visibility = Visibility.Hidden;
             textblock.Text = "Waiting for the second player to finish his preparing, please wait";
-            Shipsleft.Visibility = Visibility.Hidden;
+            Shipsleft.Content = "";//Shipsleft.Visibility = Visibility.Hidden;
             bool c;
             Task<bool> waiting = new Task<bool>(Finish2);
             waiting.Start();
