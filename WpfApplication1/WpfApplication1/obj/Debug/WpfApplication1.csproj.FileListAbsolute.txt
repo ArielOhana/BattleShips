@@ -35,7 +35,6 @@ G:\project\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.exe
 G:\project\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.pdb
 G:\project\WpfApplication1\WpfApplication1\bin\Debug\WpfApplication1.exe
 G:\project\WpfApplication1\WpfApplication1\bin\Debug\WpfApplication1.pdb
-G:\project\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.csprojResolveAssemblyReference.cache
 G:\project\WpfApplication1\WpfApplication1\obj\Debug\Game.g.cs
 G:\project\WpfApplication1\WpfApplication1\obj\Debug\MainWindow.g.cs
 G:\project\WpfApplication1\WpfApplication1\obj\Debug\App.g.cs
@@ -46,3 +45,4 @@ G:\project\WpfApplication1\WpfApplication1\obj\Debug\MainWindow.baml
 G:\project\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.g.resources
 G:\project\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.Properties.Resources.resources
 G:\project\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.csproj.GenerateResource.Cache
+G:\project\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.csprojAssemblyReference.cache

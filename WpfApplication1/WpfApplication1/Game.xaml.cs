@@ -30,6 +30,7 @@ namespace WpfApplication1
         ServerHandler Client;
         int playernumber;
         int enemyid;
+        bool Stopwaitforenemy;
         string enemyname;
         int textblockcounter;//counts how many lines were written to purge it
         int[,] field; // 0 means empty, 1 means full, 2 means hit, 3 means shooted in an empty space
@@ -193,38 +194,46 @@ namespace WpfApplication1
                     Writeintotextblock("No ships left, Press ENTER to start playing");
                 }
             }// all of that happens if the players are still preparing their ships for the game.
-            else if((playernumber == 2 && col < 10 || playernumber == 1 && col >= 10) && (field[col,row] == 0))
+            else if ((playernumber == 2 && col < 10 || playernumber == 1 && col >= 10) && (field[col, row] == 0))
             {
+                if (Stopwaitforenemy) // Check if it's his turn.
+                {
+                    Client.WriteThread("HIT: " + col + "," + row);
+                    string recieved = Client.ReadThread();
 
-                Client.WriteThread("HIT: " + col+"," +row);
-                string recieved = Client.ReadThread();
-                //  Writeintotextblock(recieved); // Recieves the answer, missed or cought
-                //Hitted.Tag = Hittedtag; // avoids double of the same object.
-                Rectangle placerec = new Rectangle();
-                if (recieved == "C") // incase caught
-                {
-                    field[col, row] = 2;
-                    Writeintotextblock("Cought him!");
-                    placerec.Opacity = 0.8;
+                    Rectangle placerec = new Rectangle();
+                    if (recieved == "C") // incase caught
+                    {
+                        field[col, row] = 2;
+                        Writeintotextblock("Cought him!");
+                        Tocatch--; // if Tocatch == 0 he won
+                        placerec.Opacity = 0.8;
+                    }
+                    if (recieved == "M") // incase missed
+                    {
+                        field[col, row] = 3;
+                        Writeintotextblock("Missed...");
+                        placerec.Opacity = 0.4;
+                    }
+                    Grid.SetColumn(placerec, col); // Sets the column of the object
+                    Grid.SetRow(placerec, row);// Sets the row of the object
+                    placerec.Fill = Brushes.Black;
+
+
+                    board.Children.Add(placerec); // adds it to the board.
+                    Shipsleft.Content = "Ships to catch: " + Tocatch.ToString();
+                    Stopwaitforenemy = false;
+                    Waiting1();
                 }
-                if (recieved == "M") // incase missed
+                else
                 {
-                    field[col, row] = 3;
-                    Writeintotextblock("Missed...");
-                    placerec.Opacity = 0.4;
+                    Writeintotextblock("Wait till your enemy finish his turn");
                 }
-                Grid.SetColumn(placerec , col); // Sets the column of the object
-                Grid.SetRow(placerec, row);// Sets the row of the object
-                placerec.Fill = Brushes.Black;
                 
-
-                board.Children.Add(placerec); // adds it to the board.
-                Tocatch--; // if Tocatch == 0 he won
-                Shipsleft.Content = "Ships to catch: "+ Tocatch.ToString();
             }
             else if ((playernumber == 2 && col < 10 || playernumber == 1 && col >= 10) && (field[col, row] == 2))
             {
-                Writeintotextblock("The ship at: " + col+ "," + row+" already hitted");
+                Writeintotextblock("The ship at: " + col + "," + row + " already hitted");
             }
             else if ((playernumber == 2 && col < 10 || playernumber == 1 && col >= 10) && (field[col, row] == 3))
             {
@@ -617,6 +626,26 @@ namespace WpfApplication1
             return small + medium + large + extralarge;
 
         }
+         private bool Waiting()
+         {
+             if (Client.ReadThread() == "Stop waiting")
+                 return true;
+            return false;
+         }
+
+        private async void Waiting1()
+        {
+            bool c = false;
+            Task<bool> waiting = new Task<bool>(Waiting);
+            waiting.Start();
+
+            c = await waiting;
+            if (c)
+            {
+                Stopwaitforenemy = true;
+                Writeintotextblock("It's your turn to play");
+            }
+        }
 
         private void Finish_Click(object sender, RoutedEventArgs e)
         {
@@ -629,6 +658,7 @@ namespace WpfApplication1
             else
                 Writeintotextblock("You need to place more ships!");
         }
+
         private async void Finishcontinue()
         {
             preparing = false;
@@ -644,6 +674,7 @@ namespace WpfApplication1
             {
                 textblock.Text = "Start Playing"; 
                 SendField();
+                Waiting1();
                 
             }
         }

@@ -114,6 +114,7 @@ namespace Server
                             {
                                 Console.WriteLine("ID: " + ClientSpecificNumber + " And ID: " + recived.Substring(3, 1) + " Stopped preparing and now starting to play");
                                 Games.Add(new Game(ClientSpecificNumber, int.Parse(recived.Substring(3, 1))));
+                                Send("Stop waiting"); // Gives the first turn to the sender
                             }
                             else
                                 Console.WriteLine("ID: " + ClientSpecificNumber + "Stopped preparing and waiting for ID: " + recived.Substring(3, 1) + " to finish preparing");
@@ -148,7 +149,7 @@ namespace Server
                         {
                             for (int i = 0; i < Games.Count; i++)
                             {
-                                if (Games[i].Player1 == ClientSpecificNumber || Games[i].Player2 == ClientSpecificNumber)
+                                if (Games[i].Player1 == ClientSpecificNumber)
                                 {
                                     msg = msg.Remove(0, 5);//The protocol.
                                     int firstnum = msg.IndexOf(","); // finds the point to split.
@@ -159,6 +160,22 @@ namespace Server
                                         Send("C"); // incase Caught one of the enemy's ships.
                                     else
                                         Send("M"); //incase missed.
+
+                                    clntList[Games[i].Player2].Send("Stop waiting");//Sends the other player that's his turn to play
+                                }
+                                if (Games[i].Player2 == ClientSpecificNumber)
+                                {
+                                    msg = msg.Remove(0, 5);//The protocol.
+                                    int firstnum = msg.IndexOf(","); // finds the point to split.
+                                    Console.WriteLine(msg + ", " + firstnum); // for debugger.
+                                    int col = int.Parse(msg.Substring(0, firstnum)); // The column.
+                                    int row = int.Parse(msg.Substring(firstnum + 1));// The row.
+                                    if (Games[i].HitMap(col, row)) // Starts the HITMAP function by sending them the col and the row I recieved.
+                                        Send("C"); // incase Caught one of the enemy's ships.
+                                    else
+                                        Send("M"); //incase missed.
+
+                                    clntList[Games[i].Player1].Send("Stop waiting");//Sends the other player that's his turn to play
                                 }
                             }
                         }
