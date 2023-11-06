@@ -9,10 +9,15 @@ using System.Threading;
 using System.IO;
 namespace WpfApplication1
 {
+    /// <summary>
+    /// This class handles the transmission between the client and the server.  
+    /// </summary>
     public class ServerHandler
     {
         public static TcpClient c = new TcpClient();
-
+        /// <summary>
+        /// creates the server by taking Port and IP from Config.txt file.
+        /// </summary>
         public ServerHandler()
         {
             string IP;
@@ -29,7 +34,11 @@ namespace WpfApplication1
             
       
         }
-        public string ReadThread()
+        /// <summary>
+        ///reads from the server 
+        /// </summary>
+        /// <returns> returns the message which recieved from the server</returns>
+        public string ReadThread() 
         { 
                 byte[] data = new byte[1024];
                 int len = c.GetStream().Read(data, 0, data.Length);
@@ -37,6 +46,10 @@ namespace WpfApplication1
             return msg;
             
         }
+        /// <summary>
+        /// // writes to the server
+        /// </summary>
+        /// <param name="msg"> the message it sends to the server.</param>
         public void WriteThread(string msg)
         { 
                 
@@ -45,7 +58,9 @@ namespace WpfApplication1
                 c.GetStream().Flush();
             
         }
-
+        /// <summary>
+        /// Closes the transmission with the server.
+        /// </summary>
         public void Close()
         {
             //close socket

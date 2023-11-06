@@ -1,0 +1,112 @@
+﻿<Window x:Class="Admin.MainAdminWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Admin"
+        mc:Ignorable="d"
+        Title="Battle Ship Administrator." WindowState="Maximized">
+    <Grid Background="Black">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="100*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100*"/>
+            <ColumnDefinition Width="500*"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="Battle Ship Administrator System" HorizontalAlignment="Center" Foreground="Blue" VerticalAlignment="Center"  FontFamily="Showcard Gothic" FontSize="34" Grid.Row="0" Grid.Column="1" Margin="1,10,2,10"/>
+        <Button x:Name="Find_Player" Content="Find Player" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="120"  FontFamily="Showcard Gothic" FontSize="16" Foreground ="Black" Background="Blue" Grid.Column="0" Grid.Row="1" Click="Find_Player_Click" />
+        <Button x:Name="Edit_DataBase" Content="Edit DataBase" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="120"  FontFamily="Showcard Gothic" FontSize="16" Foreground ="Black" Background="Blue" Grid.Column="0" Grid.Row="2" Click="Edit_DataBase_Click"/>
+        <Button x:Name="Clients_Chat" Content="Clients Chat" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="120"  FontFamily="Showcard Gothic" FontSize="16" Foreground ="Black" Background="Blue" Grid.Column="0" Grid.Row="3" Click="Clients_Chat_Click"/>
+        <Button x:Name="Show_Log" Content="Show Log" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="120"  FontFamily="Showcard Gothic" FontSize="16" Foreground ="Black" Background="Blue" Grid.Column="0" Grid.Row="4" Click="Show_Log_Click" />
+        
+        <Grid x:Name="FindPlayerGrid" Grid.Column="1" Grid.Row ="1" Grid.RowSpan="4" Visibility="Hidden">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100*"/>
+                <ColumnDefinition Width="100*"/>
+                <ColumnDefinition Width="50*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="59*"/>
+                <RowDefinition Height="74*"/>
+                <RowDefinition Height="299*"/>
+            </Grid.RowDefinitions>
+            <!-- Find Player Grid.-->
+            <Label Content="To find player enter his username" HorizontalAlignment="Center" Foreground="Blue" VerticalAlignment="Center"  FontFamily="Showcard Gothic" FontSize="30" Grid.Row="0" Grid.ColumnSpan="3" Margin="40,6,39,6"/>
+            <Label Content="Username: " HorizontalAlignment="Right" Foreground="Blue" VerticalAlignment="Center"  FontFamily="Showcard Gothic" FontSize="30" Grid.Row="1" Grid.Column="0"/>
+            <TextBox x:Name="Username" HorizontalAlignment="Center" Height="40" TextWrapping="Wrap" VerticalAlignment="Center" Width="220" FontSize="30"  Grid.Row="1" Grid.Column="1" Foreground="Blue"/>
+            <Button x:Name="FindPlayerContinue" Content="Continue" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="100"  FontFamily="Showcard Gothic" FontSize="16" Foreground ="Black" Background="Blue" Grid.Column="2" Grid.Row="1" Click="FindPlayerContinue_Click"/>
+            <Label Content="Status: " HorizontalAlignment="Right" Foreground="Blue" VerticalAlignment="Top"  FontFamily="Showcard Gothic" FontSize="30" Grid.Row="2" Grid.Column="0"/>
+            <Label x:Name="Status" Content="Waiting for press" HorizontalAlignment="Left" Foreground="Blue" VerticalAlignment="Top"  FontFamily="Showcard Gothic" FontSize="30" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="10,0,0,0"/>
+            <Grid x:Name="InsideFindPlayerGrid" Background="Black" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Visibility="Hidden">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200*"/>
+                    <ColumnDefinition Width="100*"/>
+                    <ColumnDefinition Width="100*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100*"/>
+                    <RowDefinition Height="100*"/>
+                    <RowDefinition Height="100*"/>
+                    <RowDefinition Height="100*"/>
+                    <RowDefinition Height="100*"/>
+                </Grid.RowDefinitions>
+                <Button x:Name="FindPlayerSaveChanges" Content="Save" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="100"  FontFamily="Showcard Gothic" FontSize="16" Foreground ="Black" Background="Blue" Grid.Column="2" Grid.Row="4" Click="FindPlayerSaveChanges_Click" />
+                <Label Content="Current" HorizontalAlignment="Center" Foreground="Blue" VerticalAlignment="Center"  FontFamily="Showcard Gothic" FontSize="30" Grid.Row="0" Grid.Column="1"/>
+                <Label Content="Adjust" HorizontalAlignment="Center" Foreground="Blue" VerticalAlignment="Center"  FontFamily="Showcard Gothic" FontSize="30" Grid.Row="0" Grid.Column="2"/>
+                <Label Content="Admin Rank: " HorizontalAlignment="Right" Foreground="Blue" VerticalAlignment="Center"  FontFamily="Showcard Gothic" FontSize="30" Grid.Row="1" Grid.Column="0"/>
+                <Label Content="Wins: " HorizontalAlignment="Right" Foreground="Blue" VerticalAlignment="Center"  FontFamily="Showcard Gothic" FontSize="30" Grid.Row="2" Grid.Column="0"/>
+                <Label Content="Loses: " HorizontalAlignment="Right" Foreground="Blue" VerticalAlignment="Center"  FontFamily="Showcard Gothic" FontSize="30" Grid.Row="3" Grid.Column="0"/>
+                <TextBlock x:Name="TextBlockRank" Foreground="Blue" FontSize="30" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="" Height="45" Width="100" VerticalAlignment="Center" Background="White"/>
+                <TextBlock x:Name="TextBlockWins" Foreground="Blue" FontSize="30" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="2" TextWrapping="Wrap" Text="" Height="45" Width="100" VerticalAlignment="Center" Background="White" Margin="29,7.5"/>
+                <TextBlock x:Name="TextBlockLoses" Foreground="Blue" FontSize="30" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="3" TextWrapping="Wrap" Text="" Height="45" Width="100" VerticalAlignment="Center" Background="White"/>
+
+                <TextBox x:Name="TextBoxLoses" Foreground="Blue" FontSize="30" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="3" TextWrapping="Wrap" Text="" Height="45" Width="100" VerticalAlignment="Center" Background="White"/>
+                <TextBox x:Name="TextBoxWins" Foreground="Blue" FontSize="30" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="2" TextWrapping="Wrap" Text="" Height="45" Width="100" VerticalAlignment="Center" Background="White"/>
+                <TextBox x:Name="TextBoxRank" Foreground="Blue" FontSize="30" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="" Height="45" Width="100" VerticalAlignment="Center" Background="White"/>
+
+                <Label x:Name="SaveStatus" Content="Save Status: Waiting" HorizontalAlignment="Center" Foreground="Blue" VerticalAlignment="Center"  FontFamily="Showcard Gothic" FontSize="30" Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0"/>
+
+                <!--Open Client Details Grid, exchange of status label.-->
+            </Grid>
+
+        </Grid>
+        <Grid x:Name="Edit_DatabaseGrid" Grid.Column="1" Grid.Row ="1" Grid.RowSpan="4" Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="59*"/>
+                <RowDefinition Height="373*"/>
+            </Grid.RowDefinitions>
+            <!-- Edit Database grid.-->
+            <Label Content="Edit the database and then press save" HorizontalAlignment="Center" Foreground="Blue" VerticalAlignment="Center"  FontFamily="Showcard Gothic" FontSize="30" Grid.Row="0" Margin="0,6" Width="633"/>
+            <Button x:Name="EditDatabaseButton" Click="EditDatabaseButton_Click" Content="Save" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="50" Width="100"  FontFamily="Showcard Gothic" FontSize="16" Foreground ="Black" Background="Blue" Grid.Row="1" Margin="0,0,10,10"  />
+            <TextBox x:Name="DatabaseTextBox" Foreground="Blue" HorizontalAlignment="Center" Height="348" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="310" Grid.Row="1"/>
+            <!--Open Edit Database grid..-->
+        </Grid>
+        <Grid x:Name="Show_LogGrid" Grid.Column="1" Grid.Row ="1" Grid.RowSpan="4" Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="59*"/>
+                <RowDefinition Height="373*"/>
+            </Grid.RowDefinitions>
+            <!-- Show log grid.-->
+            <Label Content="Check up on the server's activities" HorizontalAlignment="Center" Foreground="Blue" VerticalAlignment="Center"  FontFamily="Showcard Gothic" FontSize="30" Grid.Row="0"/>
+            <TextBox x:Name="LogTextBox" HorizontalAlignment="Center" Height="348" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Foreground="Blue" Width="310" Grid.Row="1"/>
+            <!--Open Show log grid..-->
+        </Grid>
+        <Grid x:Name="Show_ChatGrid" Grid.Column="1" Grid.Row ="1" Grid.RowSpan="4" Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="59*"/>
+                <RowDefinition Height="373*"/>
+            </Grid.RowDefinitions>
+            <!-- Show Chat grid.-->
+            <Label Content="Check up on clients messages" HorizontalAlignment="Center" Foreground="Blue" VerticalAlignment="Center"  FontFamily="Showcard Gothic" FontSize="30" Grid.Row="0"/>
+            <TextBlock x:Name="ChatBox" HorizontalAlignment="Center" Height="348" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="310" Grid.Row="1" Background="White" Foreground="Blue"/>
+            <Button x:Name="DeleteClientChatButton"  Content="Delete chat" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="50" Width="130"  FontFamily="Showcard Gothic" FontSize="16" Foreground ="Black" Background="Blue" Grid.Row="1" Margin="0,0,10,10" Click="DeleteClientChatButton_Click"  />
+
+            <!--Open Show Chat grid..-->
+        </Grid>
+    </Grid>
+</Window>

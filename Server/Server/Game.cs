@@ -5,7 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Server
-{
+{ /// <summary>
+/// This class responsible of setting up the game, this one recieves the players, starts the game and sets up the board.
+/// after setting up the board the main responsibility turns to check if there are hits on and board and updates them
+/// </summary>
     class Game
     {
         private int player1;
@@ -14,9 +17,15 @@ namespace Server
         private int BoardWide;
         private int BoardHigh;
         private int CountMapSets;
-
+        private int GameFinished; // 0 no, 1 player 1 won, 2 player 2 won.
+        /// <summary>
+        /// game builder - sets up the game and the board
+        /// </summary>
+        /// <param name="player1"> the first player ID (ClientSpecificNumber)</param>
+        /// <param name="player2">the second player ID (ClientSpecificNumber)</param>
         public Game(int player1, int player2)
         {
+            this.GameFinished = 0;
             this.BoardHigh = 20;
             this.BoardWide = 20;
             this.Player1 = player1;
@@ -31,7 +40,11 @@ namespace Server
                 }
             }
         }
-        public void SetUpMap(string Givenmap) // Sets up the map by recieving string of 1 side each time.
+        /// <summary>
+        /// Sets up the map by recieving string of 1 side each time.
+        /// </summary>
+        /// <param name="Givenmap"> the given map</param>
+        public void SetUpMap(string Givenmap) 
         {
             Givenmap = Givenmap.Replace("\n", "");
             for(int i = 0; i < BoardWide; i++)
@@ -86,11 +99,30 @@ namespace Server
             }
         }
 
+        public int GameFinished1
+        {
+            get
+            {
+                return GameFinished;
+            }
+
+            set
+            {
+                GameFinished = value;
+            }
+        }
+
         public int[,] GetMap()
         {
             return Map;
         }
-        public bool HitMap(int col, int row) //Sets the map on the col and row to zero and checks if it hit something.
+        /// <summary>
+        /// Sets the map on the col and row to zero and checks if it hit something.
+        /// </summary>
+        /// <param name="col"> the column to hit</param>
+        /// <param name="row"> the row to hit</param>
+        /// <returns></returns>
+        public bool HitMap(int col, int row) 
         {
             bool toret = false;
             if(Map[col,row] == 1) // if there is a ship

@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
-using System.Threading;
-using System.IO;
 namespace Server
 {
     class Server
     {
+        /// <summary>
+        /// This class creates the server and sets it able to get more clients.
+        /// </summary>
         private TcpListener listener;
         private IPAddress ip;
         private int port;
@@ -60,8 +56,11 @@ namespace Server
                 port = value;
             }
         }
-
-        public  Server(int port)
+        /// <summary>
+        ///  BUILDER - creates the server by the IP address of the computer and the given port.
+        /// </summary>
+        /// <param name="port"> the PORT number</param>
+        public Server(int port)
         {
             var host = Dns.GetHostName();
             this.ip = IPAddress.Parse(Dns.GetHostByName(host).AddressList[0].ToString());
@@ -69,8 +68,10 @@ namespace Server
             this.listener = new TcpListener(ip, this.port);
 
         }
-
-        public void Start()
+        /// <summary>
+        /// This function recieves clients and creates a Clienthandler to handle the client.
+        /// </summary>
+        public void Start() 
         {
             listener.Start();
 

@@ -39,23 +39,45 @@
                 <RowDefinition Height="100*"/>
                 <RowDefinition Height="100*"/>
             </Grid.RowDefinitions>
-            <Button x:Name="Play" Content="Play" HorizontalAlignment="Center" VerticalAlignment="Center" Width="98" Height="57" FontFamily="Showcard Gothic" FontSize="36" Foreground ="White" Background="Black" Click="Play_Click" Margin="171,15,172,10" />
-            <Button x:Name="Info" Content="Info" HorizontalAlignment="Center" VerticalAlignment="Center" Width="98" Height="58" FontFamily="Showcard Gothic" FontSize="40" Foreground ="White" Background="Black" Click="Info_Click" Margin="171,15,172,10" Grid.Row="1"/>
-            <Button x:Name="Exit" Content="Exit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="98" Height="58" FontFamily="Showcard Gothic" FontSize="38" Foreground ="White" Background="Black" Click="Exit_Click" Margin="171,10,172,14" Grid.Row="2"/>
+            <Button x:Name="Play" Content="Play" HorizontalAlignment="Center" VerticalAlignment="Center" Width="140" Height="58" FontFamily="Showcard Gothic" FontSize="36" Foreground ="White" Background="Black" Click="Play_Click" />
+            <Button x:Name="Help" Content="Help" HorizontalAlignment="Center" VerticalAlignment="Center" Width="140" Height="58" FontFamily="Showcard Gothic" FontSize="40" Foreground ="White" Background="Black" Click="Info_Click" Grid.Row="1"/>
+            <Button x:Name="Exit" Content="Exit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="140" Height="58" FontFamily="Showcard Gothic" FontSize="38" Foreground ="White" Background="Black" Click="Exit_Click" Grid.Row="2"/>
         </Grid>
 
-        <Grid x:Name ="InfoPage" Visibility="Hidden"  Grid.Row="1">
+        <Grid x:Name ="HelpPage" Visibility="Hidden"  Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="223*"/>
+                <ColumnDefinition Width="218*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="100*"/>
                 <RowDefinition Height="100*"/>
             </Grid.RowDefinitions>
-            <Label Content="Main target of the game: Destroying all the ships of your enemy." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Height="33" Width="421"/>
-            <Label Content="This game has few mods, before each of them you will see the special rules." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,25,0,0" Height="27" Width="421"/>
-            <Label Content="Each player has a record, Each game you will win or lose will count" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,43,0,0" Height="27" Width="421"/>
-            <Label Content="In addition, every game you will leave will count as two loses." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,57,0,0" Height="27" Width="421"/>
-            <Button Content="Exit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="74" Height="32" FontFamily="Showcard Gothic" FontSize="14" Foreground ="White" Background="Black" Click ="ExitToMain_Click" Grid.Row="1"/>
-        </Grid>
+            <Label Content="First need you need to do is to prepare for a battle, place your ships and" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Height="33" Width="421" Grid.ColumnSpan="2"/>
+            <Label Content="press on the enter button to start a game, then each player in his turn gets" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,25,0,0" Height="27" Width="421" Grid.ColumnSpan="2"/>
+            <Label Content="attempt to hit the enemy, the first one to catch all the enemy's ships wins" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,43,0,0" Height="27" Width="421" Grid.ColumnSpan="2"/>
+            <Label Content="if you have any suggestions or something you want to tell our admins" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,57,0,0" Height="27" Width="421" Grid.ColumnSpan="2"/>
+            <Label Content="press the Chat button. else press exit." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,70,0,0" Height="27" Width="421" Grid.ColumnSpan="2"/>
+            <Button Content="Exit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="74" Height="32" FontFamily="Showcard Gothic" FontSize="14" Foreground ="White" Background="Black" Click ="ExitToMain_Click" Grid.Row="1" Grid.Column="0"/>
+            <Button Content="Chat" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="32" FontFamily="Showcard Gothic" FontSize="14" Foreground ="White" Background="Black"  Grid.Row="1" Grid.Column="1" Margin="74,46,49,45" Click="Button_Click"/>
 
+        </Grid>
+        <Grid x:Name ="Suggestion_Page" Visibility="Hidden"  Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="32*"/>
+                <ColumnDefinition Width="31*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="51*"/>
+                <RowDefinition Height="140*"/>
+                <RowDefinition Height="56*"/>
+            </Grid.RowDefinitions>
+            <TextBox x:Name="ChatBox" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="" Background="White" VerticalAlignment="Top" Height="140" Width="441" Grid.ColumnSpan="2"/>
+            <Label Content="Suggestions / Problems" HorizontalAlignment="Center" VerticalAlignment="Center"  FontFamily="Showcard Gothic" FontSize="32" Grid.Row="0" Grid.ColumnSpan="2" Margin="17,0,17,1"/>
+            <Button Content="Exit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="74" Height="32" FontFamily="Showcard Gothic" FontSize="14" Foreground ="White" Background="Black" Click ="ExitToMain_Click" Grid.Row="2" Grid.Column="0"/>
+            <Button x:Name="ChatButton" Click="ChatButton_Click" Content="Send" HorizontalAlignment="Center" VerticalAlignment="Center" Width="74" Height="32" FontFamily="Showcard Gothic" FontSize="14" Foreground ="White" Background="Black" Grid.Row="2" Grid.Column="1"/>
+
+        </Grid>
         <Grid x:Name ="PlayPage" Visibility="Hidden"  Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width = "220*" />

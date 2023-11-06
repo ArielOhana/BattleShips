@@ -15,4 +15,26 @@ G:\project\Server\Server\obj\Debug\Server.exe
 G:\project\Server\Server\obj\Debug\Server.pdb
 G:\project\Server\Server\bin\Debug\Server.exe
 G:\project\Server\Server\bin\Debug\Server.pdb
-G:\project\Server\Server\obj\Debug\Server.csprojAssemblyReference.cache
+G:\project\Server\Server\obj\Debug\Server.csprojResolveAssemblyReference.cache
+G:\project\Server\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
+C:\Users\אריאל\Desktop\project\Server\Server\bin\Debug\Server.exe.config
+C:\Users\אריאל\Desktop\project\Server\Server\bin\Debug\Server.exe
+C:\Users\אריאל\Desktop\project\Server\Server\bin\Debug\Server.pdb
+C:\Users\אריאל\Desktop\project\Server\Server\obj\Debug\Server.csprojResolveAssemblyReference.cache
+C:\Users\אריאל\Desktop\project\Server\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
+C:\Users\אריאל\Desktop\project\Server\Server\obj\Debug\Server.exe
+C:\Users\אריאל\Desktop\project\Server\Server\obj\Debug\Server.pdb
+C:\Users\אריאל\Desktop\School\Ariel\project to submit\Server\Server\bin\Debug\Server.exe.config
+C:\Users\אריאל\Desktop\School\Ariel\project to submit\Server\Server\bin\Debug\Server.exe
+C:\Users\אריאל\Desktop\School\Ariel\project to submit\Server\Server\bin\Debug\Server.pdb
+C:\Users\אריאל\Desktop\School\Ariel\project to submit\Server\Server\obj\Debug\Server.csprojResolveAssemblyReference.cache
+C:\Users\אריאל\Desktop\School\Ariel\project to submit\Server\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
+C:\Users\אריאל\Desktop\School\Ariel\project to submit\Server\Server\obj\Debug\Server.exe
+C:\Users\אריאל\Desktop\School\Ariel\project to submit\Server\Server\obj\Debug\Server.pdb
+C:\Users\אריאל\Desktop\Project to submit\Source\Server\Server\bin\Debug\Server.exe.config
+C:\Users\אריאל\Desktop\Project to submit\Source\Server\Server\bin\Debug\Server.exe
+C:\Users\אריאל\Desktop\Project to submit\Source\Server\Server\bin\Debug\Server.pdb
+C:\Users\אריאל\Desktop\Project to submit\Source\Server\Server\obj\Debug\Server.csprojResolveAssemblyReference.cache
+C:\Users\אריאל\Desktop\Project to submit\Source\Server\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
+C:\Users\אריאל\Desktop\Project to submit\Source\Server\Server\obj\Debug\Server.exe
+C:\Users\אריאל\Desktop\Project to submit\Source\Server\Server\obj\Debug\Server.pdb

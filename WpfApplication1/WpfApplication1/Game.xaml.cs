@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -15,10 +10,14 @@ using System.Windows.Shapes;
 namespace WpfApplication1
 {
     /// <summary>
-    /// Interaction logic for Game.xaml
+    ///Game Window: This window is responsable of all the game matters
+    ///First setting up the ships and sends it to the server
+    ///Second Hitting the enemy on the chosen locations and sends it to the server
+    ///third Sending a win message to the server;
     /// </summary>
     public partial class Game : Window
     {
+        bool gameover = false;
         int Tocatch;
         int x = -1;
         int y = -1;
@@ -35,7 +34,15 @@ namespace WpfApplication1
         int textblockcounter;//counts how many lines were written to purge it
         int[,] field; // 0 means empty, 1 means full, 2 means hit, 3 means shooted in an empty space
         bool preparing = true;
-        public Game(ServerHandler Client, int playernumber,string myusername, int enemyid) // Creates a game
+
+        /// <summary>
+        /// This function creates a game
+        /// </summary>
+        /// <param name="Client"> Stands for the transmission between the server and the client</param>
+        /// <param name="playernumber"> The ID of the client</param>
+        /// <param name="myusername"> The username of my client</param>
+        /// <param name="enemyid"> The enemy ID number</param>
+        public Game(ServerHandler Client, int playernumber,string myusername, int enemyid)
         {
 
             this.textblockcounter = 0;
@@ -70,7 +77,11 @@ namespace WpfApplication1
             this.Tocatch = xlimgs.Length*4 + limgs.Length*3 + mimgs.Length*2 + simgs.Length;
 
         }
-        private int[] GetMouseLoc() //Gets the mouse location
+        /// <summary>
+        /// This function returns the mouse location
+        /// </summary>
+        /// <returns>returns the mouse location</returns>
+        private int[] GetMouseLoc()
         {
             var point = Mouse.GetPosition(board);
             int row = 0;
@@ -100,8 +111,10 @@ namespace WpfApplication1
             tosend[1] = row;
             return tosend;
         }
-
-        private void Mouse_Move(object sender, MouseEventArgs e) //Event that happens as the mouse moves
+        /// <summary>
+        ///  Event: Catches the mouse movement of the grid and sets the red rectangle if needed.
+        /// </summary>
+        private void Mouse_Move(object sender, MouseEventArgs e)
         {
             int[] getloc = GetMouseLoc();
             int col = getloc[0];
@@ -120,7 +133,11 @@ namespace WpfApplication1
                     board.Children.Remove(rec);
             }
         }
-
+        /// <summary>
+        /// This event catch a press on the left mouse button.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Board_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             int[] getloc = GetMouseLoc();
@@ -208,6 +225,13 @@ namespace WpfApplication1
                         Writeintotextblock("Cought him!");
                         Tocatch--; // if Tocatch == 0 he won
                         placerec.Opacity = 0.8;
+                        if (Tocatch == 0) // checks if there are no ships left to catch to send a win to the server.
+                        {
+                            Client.WriteThread("WIN");// updates win
+                            gameover = true;
+                            Finish.Visibility = Visibility.Visible;
+                            textblock.Text = "You WON! Press enter to continue";
+                        }
                     }
                     if (recieved == "M") // incase missed
                     {
@@ -222,22 +246,30 @@ namespace WpfApplication1
 
                     board.Children.Add(placerec); // adds it to the board.
                     Shipsleft.Content = "Ships to catch: " + Tocatch.ToString();
+                    if (Tocatch == 0)
+                    {
+                        Client.WriteThread("WIN");// re-check if there is any win.
+                        gameover = true;
+                        Finish.Visibility = Visibility.Visible;
+                        textblock.Text = "You WON! Press enter to continue";
+                    }
                     Stopwaitforenemy = false;
                     Waiting1();
                 }
                 else
                 {
                     Writeintotextblock("Wait till your enemy finish his turn");
+             
                 }
                 
             }
             else if ((playernumber == 2 && col < 10 || playernumber == 1 && col >= 10) && (field[col, row] == 2))
             {
-                Writeintotextblock("The ship at: " + col + "," + row + " already hitted");
+                Writeintotextblock("The ship at: " + col + "," + row + " already hitted"); // incase you shoot a ship that you already shoot.
             }
             else if ((playernumber == 2 && col < 10 || playernumber == 1 && col >= 10) && (field[col, row] == 3))
             {
-                Writeintotextblock("You already tried to hit: " + col + "," + row + " and missed...");
+                Writeintotextblock("You already tried to hit: " + col + "," + row + " and missed..."); // incase you try to shoot where you already shoot.
             }
         }
 
@@ -292,8 +324,12 @@ namespace WpfApplication1
 
             }
         }
-
-        private void CreateLargeSubFlat(int x, int y) // Creates large ship and sets it into the field, board and array.
+        /// <summary>
+        /// Creates large ship and sets it into the field, board and array.
+        /// </summary> 
+        /// <param name="x"> cordinate</param>
+        /// <param name="y">cordinate</param>
+        private void CreateLargeSubFlat(int x, int y) 
         {
             bool full = true;
             bool placeable = false;
@@ -343,7 +379,12 @@ namespace WpfApplication1
                 
             }
         }
-        private void CreateMediumSubFlat(int x, int y) // Creates medium ship and sets it into the field, board and array.
+        /// <summary>
+        ///  Creates medium ship and sets it into the field, board and array.
+        /// </summary> 
+        /// <param name="x"> cordinate</param>
+        /// <param name="y">cordinate</param>
+        private void CreateMediumSubFlat(int x, int y)
         {
             bool full = true;
             bool placeable = false;
@@ -395,13 +436,18 @@ namespace WpfApplication1
                 }
             
         }
-        private void CreateSmallSub(int x, int y) // Creates small ship and sets it into the field, board and array.
+        /// <summary>
+        ///  Creates small ship and sets it into the field, board and array.
+        /// </summary> 
+        /// <param name="x"> cordinate</param>
+        /// <param name="y">cordinate</param>
+        private void CreateSmallSub(int x, int y) 
         {
 
             bool full = true;
             bool placeable = false;
             Image img = new Image();
-            for (int i = 0; i < simgs.Length && !placeable; i++)// Checks if there are medium ships left 
+            for (int i = 0; i < simgs.Length && !placeable; i++)// Checks if there are small ships left 
             {
                 if (simgs[i] == null)
                 {
@@ -445,7 +491,12 @@ namespace WpfApplication1
 
             }
         }
-        private void RemoveShip(int x, int y) //Removes ship from it's array, remove it from the field and board childrens
+        /// <summary>
+        ///Removes ship from it's array, remove it from the field and board childrens        ///
+        ///</summary> 
+        /// <param name="x"> cordinate</param>
+        /// <param name="y">cordinate</param>
+        private void RemoveShip(int x, int y) 
         {
             bool foundship = false;
             for (int i = 0; i < simgs.Length && !foundship; i++)
@@ -567,21 +618,31 @@ namespace WpfApplication1
                 Writeintotextblock("Ship Removed");
             }
         }
-
+        /// <summary>
+        /// This function writes to textblock.
+        /// </summary>
+        /// <param name="thingtowrite"> the string to write.</param>
         private void Writeintotextblock(string thingtowrite)
         {
-            if (textblockcounter >= 18)// max lines
+            if (!gameover) // checks if the game is still on, in target to avoid writing after game ends.
             {
-                textblock.Text = thingtowrite + "\n";
-                textblockcounter = 0;
+                if (textblockcounter >= 18)// max lines
+                {
+                    textblock.Text = thingtowrite + "\n";
+                    textblockcounter = 0;
+                }
+                else
+                {
+                    textblock.Text += thingtowrite + "\n";
+                }
+                textblockcounter++;
             }
-            else
-            {
-                textblock.Text += thingtowrite+ "\n";
-            }
-            textblockcounter++;
         }
-        private bool UpdateShipsLeft() //Updates how many ships left and sets it into "Shipleft" label and sends true if no ships left
+        /// <summary>
+        /// //Updates how many ships left and sets it into "Shipleft" label and sends true if no ships left
+        /// </summary>
+        /// <returns> returns true if there are no ships left..</returns>
+        private bool UpdateShipsLeft()
         {
             int extralarge = 0;
             int large = 0;
@@ -605,7 +666,11 @@ namespace WpfApplication1
             return false;
 
         }
-        private int GetHowManyShipsLeft() //Updates how many ships left and sets it into "Shipleft" label and sends true if no ships left
+        /// <summary>
+        /// //Updates how many ships left and sets it into "Shipleft" label and sends true if no ships left
+        /// </summary>
+        /// <returns> returns how many ships left.</returns>
+        private int GetHowManyShipsLeft() 
         {
             int extralarge = 0;
             int large = 0;
@@ -626,45 +691,95 @@ namespace WpfApplication1
             return small + medium + large + extralarge;
 
         }
-         private bool Waiting()
+         private string Waiting()
          {
-             if (Client.ReadThread() == "Stop waiting")
-                 return true;
-            return false;
+            string recieved = Client.ReadThread();
+            if(recieved.Length>12)
+             if (recieved.Substring(0,12)== "Stop waiting")
+                 return recieved.Remove(0,14);
+            return "failed";
          }
 
         private async void Waiting1()
         {
-            bool c = false;
-            Task<bool> waiting = new Task<bool>(Waiting);
+            string c;
+            Task<string> waiting = new Task<string>(Waiting);
             waiting.Start();
 
             c = await waiting;
-            if (c)
+            if (c != "failed")
             {
-                Stopwaitforenemy = true;
-                Writeintotextblock("It's your turn to play");
+                Client.WriteThread("CHW"); // Game Protocol to check if there is a winner.
+                if (Client.ReadThread() == "Enemy won")
+                {
+                    gameover = true;
+                    Finish.Visibility = Visibility.Visible;
+                    textblock.Text = "Your enemy won, please press enter to continue..";
+                    int col = int.Parse(c.Substring(0, c.IndexOf(",")));
+                    int row = int.Parse(c.Substring(c.IndexOf(",") + 1));
+                    if (col >= 0 && row >= 0)
+                    {
+                        Rectangle placerec = new Rectangle();
+                        placerec.Opacity = 0.6;
+                        Grid.SetColumn(placerec, col); // Sets the column of the object
+                        Grid.SetRow(placerec, row);// Sets the row of the object
+                        placerec.Fill = Brushes.Red;
+
+
+                        board.Children.Add(placerec); // adds it to the board.
+                    }
+                }
+                else
+                {
+                    Stopwaitforenemy = true;
+                    Writeintotextblock(" It's your turn to play");
+
+                    int col = int.Parse(c.Substring(0, c.IndexOf(",")));
+                    int row = int.Parse(c.Substring(c.IndexOf(",") + 1));
+                    if (col >= 0 && row >= 0)
+                    {
+                        Rectangle placerec = new Rectangle();
+                        placerec.Opacity = 0.6;
+                        Grid.SetColumn(placerec, col); // Sets the column of the object
+                        Grid.SetRow(placerec, row);// Sets the row of the object
+                        placerec.Fill = Brushes.Red;
+
+
+                        board.Children.Add(placerec); // adds it to the board.
+                    }
+                }
             }
         }
-
-        private void Finish_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// // checks if the game isn't over, and send Stop preparing and waiting for the other player
+        /// </summary>
+        private void Finish_Click(object sender, RoutedEventArgs e) 
         {
-            if (GetHowManyShipsLeft() == 0)
+            if (!gameover)
             {
-                
-                Client.WriteThread("SPP" + enemyid);
-                Finishcontinue();
+                if (GetHowManyShipsLeft() == 0)
+                {
+
+                    Client.WriteThread("SPP" + enemyid);
+                    Finishcontinue();
+                }
+                else
+                    Writeintotextblock("You need to place more ships!");
             }
             else
-                Writeintotextblock("You need to place more ships!");
+            {
+                this.Close();
+            }
         }
-
-        private async void Finishcontinue()
+        /// <summary>
+        /// //async function that recognizes when player stop preparing
+        /// </summary>
+        private async void Finishcontinue() 
         {
             preparing = false;
             Finish.Visibility = Visibility.Hidden;
             textblock.Text = "Waiting for the second player to finish his preparing, please wait";
-            Shipsleft.Content = "";//Shipsleft.Visibility = Visibility.Hidden;
+            Shipsleft.Content = "";
             bool c;
             Task<bool> waiting = new Task<bool>(Finish2);
             waiting.Start();

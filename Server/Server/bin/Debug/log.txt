@@ -1,39 +1,9 @@
-ariel
-1234
-0/0/0
-
-notableforplayfornowbecauseofthesendingtheGEN
-0/0/0
-hana
-1234
-0/0/0
-yyyy
-yyyy
-0/0/0
-shay
-shay1122!
-0/0/0
-anatoly
-1234
-0/0/0
-shiko
-1234
-0/0/0
-player1
-1234
-0/0/0
-player2
-1234
-0/0/0
-as
-1234
-0/0/0
-ron
-1234
-0/0/0
-pagi
-ronr2903
-0/0/0
-Eitan
-1234
-0/0/0
+Restarts the server at: 13/05/2020 19:39:39
+IP: 192.168.1.104
+Restarts the server at: 13/05/2020 20:14:13
+IP: 192.168.1.104
+Restarts the server at: 13/05/2020 20:14:16
+IP: 192.168.1.104Restarts the server at: 07/06/2020 09:15:25
+IP: 192.168.10.199
+Restarts the server at: 07/10/2020 01:03:58
+IP: 192.168.1.105
